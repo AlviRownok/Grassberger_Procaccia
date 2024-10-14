@@ -1,8 +1,9 @@
+import os
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist, squareform
-from utils_gp import resizeAndPad
+from Grassberger_Procaccia.Backend.utils_gp import resizeAndPad
 
 class ImageFractalDimension2:
     def __init__(self, image_name, SIZE):
@@ -14,7 +15,9 @@ class ImageFractalDimension2:
         self.img_px_array = np.asarray(image, dtype=np.uint8)  # Ensure image array is uint8 for cv2 operations
         self.binarizeImg()
         self.extractPoints()
-        self.fractal_dim = self.calculate_fractal_dim()
+
+        # Compute fractal dimension and correlation sums only once
+        self.fractal_dim, self.log_eps, self.log_C = self.calculate_fractal_dim()
 
     def binarizeImg(self):
         # Iterate over each pixel in the image array
@@ -50,10 +53,9 @@ class ImageFractalDimension2:
         max_epsilon = np.max(distances)
 
         # Generate fewer epsilons across this new range
-        epsilons = np.logspace(np.log10(min_epsilon), np.log10(max_epsilon), num=50)  # Playing with the value of num
+        epsilons = np.logspace(np.log10(min_epsilon), np.log10(max_epsilon), num=50)
 
         # Calculate the correlation sums for each epsilon
-        # Convert calculation to use numpy directly for improved memory usage and possibly better performance
         C = np.array([np.sum(distance_matrix < eps) for eps in epsilons], dtype=np.float32) / distance_matrix.size
 
         # Fit a line to the log-log data to find the slope (correlation dimension)
@@ -61,28 +63,14 @@ class ImageFractalDimension2:
         log_C = np.log(C)
         slope, _ = np.polyfit(log_eps, log_C, 1)
 
-        # Return the slope rounded to two decimal places
-        return round(slope, 2)
-
+        # Return the slope rounded to two decimal places and also the log-log data for plotting
+        return round(slope, 2), log_eps, log_C
 
     def graph(self, save=False, **kwargs):
         path = kwargs.get('path', 'output.png')  # Set default path if none provided
         
-        distances = pdist(self.points, 'euclidean')
-        distance_matrix = squareform(distances)
-        min_epsilon = np.min(distances[distances > 0]) * 1.01
-        max_epsilon = np.max(distances)
-        epsilons = np.logspace(np.log10(min_epsilon), np.log10(max_epsilon), num=50) # Playing with the value of num
-
-        # Ensure C is a floating-point array to handle division properly
-        C = np.array([(distance_matrix < eps).sum() for eps in epsilons], dtype=np.float32)
-        C /= np.size(distance_matrix)  # Normalize by the total number of elements in the distance matrix
-
-        log_eps = np.log(epsilons)
-        log_C = np.log(C)
-
         plt.figure()
-        plt.plot(log_eps, log_C, marker='o')
+        plt.plot(self.log_eps, self.log_C, marker='o')
         plt.xlabel('Log(Epsilon)')
         plt.ylabel('Log(Correlation Sum)')
         plt.title(f"Log-Log Plot of Correlation Sum vs Epsilon\nFractal Dimension: {self.fractal_dim:.2f}")
@@ -90,3 +78,24 @@ class ImageFractalDimension2:
         if save and path:
             plt.savefig(path)
         plt.close()  # Ensure closure of the figure to free up memory
+
+
+def runForEveryImageInFolder(fol_name, plot_fol_name):
+    os.makedirs(plot_fol_name, exist_ok=True)  # Ensure the plot folder exists
+    with open("results.csv", "w") as f:  # Use 'w' to overwrite existing or use 'a' to append
+        f.write("Filename;Fractal Dimension\n")  # Write the header to the CSV file
+
+        for filename in os.listdir(fol_name):
+            if filename.endswith(".png"):
+                file_path = os.path.join(fol_name, filename)
+                print(file_path)  # Print the full path of the file
+
+                save_path = os.path.join(plot_fol_name, filename.replace(".png", "") + "_plot.png")
+                # Initialize ImageFractalDimension2
+                curr_fractal = ImageFractalDimension2(file_path, 256)
+                print(curr_fractal.fractal_dim)  # Print the calculated fractal dimension
+
+                f.write(filename.split('.')[0] + ";" + str(curr_fractal.fractal_dim) + "\n")  # Write to CSV
+
+                # Save the plot with a modified file name to include "_plot"
+                curr_fractal.graph(save=True, path=save_path)

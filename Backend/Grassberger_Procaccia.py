@@ -1,49 +1,65 @@
 import os
-from ImageFractalDimension_GP import ImageFractalDimension2
-from utils_gp import *
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from Grassberger_Procaccia.Backend.utils_gp import read_from_file
 
-def runForEveryImageInFolder(fol_name, plot_fol_name):
-    os.makedirs(plot_fol_name, exist_ok=True)  # Ensure the plot folder exists
-    with open("results.csv", "w") as f:  # Use 'w' to overwrite existing or use 'a' to append
-        f.write("Filename;Fractal Dimension\n")  # Write the header to the CSV file
+python_GP_data = []  # Empty list that will be filled with fractal dimensions calculated by the Python method
 
-        for filename in os.listdir(fol_name):
-            if filename.endswith(".png"):
-                file_path = os.path.join(fol_name, filename)
-                print(file_path)  # Print the full path of the file
+def compute_diff_between_methods(fractalyse_GP_data, python_GP_data, file_path=None, river_names=None):
+    if not python_GP_data:  # Check if the Python GP data list is empty
+        if file_path is not None:
+            read_from_file(file_path, python_GP_data)  # Read fractal dimensions from the file
+        else:
+            raise ValueError("No data available and no file path provided")
 
-                save_path = os.path.join(plot_fol_name, filename.replace(".png", "") + "_plot.png")
-                # Initialize ImageFractalDimension2
-                curr_fractal = ImageFractalDimension2(file_path, 256)
-                print(curr_fractal.fractal_dim)  # Print the calculated fractal dimension
+    if len(fractalyse_GP_data) != len(python_GP_data):
+        raise ValueError("Data lists are of unequal length")
 
-                f.write(filename.split('.')[0] + ";" + str(curr_fractal.fractal_dim) + "\n")  # Write to CSV
+    # Calculate the difference between the two lists and round each difference to two decimal places
+    diff = [round(el1 - el2, 2) for el1, el2 in zip(fractalyse_GP_data, python_GP_data)]
 
-                # Save the plot with a modified file name to include "_plot"
-                curr_fractal.graph(save=True, path=save_path)
+    if river_names:
+        print("Differences between Fractalyse and Python G-P methods:")
+        for i, river in enumerate(river_names):
+            print(f"{river}: {diff[i]}")
+    else:
+        print("Differences between Fractalyse and Python G-P methods:", diff)
 
-def main():
-    # fol_name = "C:\\Users\\alvirownok\\Downloads\\Fracture Analysis Project Mariarca, Prof Max and Prof Longo\\G_P\\All rivers"
-    # fol_name = "C:\\Users\\alvirownok\\Downloads\\Fracture Analysis Project Mariarca, Prof Max and Prof Longo\\Materiale per Maria\\Images\\Manually extracted 131 imgs\\"
-    # fol_name = "C:\\Users\\alvirownok\\Downloads\\Fracture Analysis Project Mariarca, Prof Max and Prof Longo\\extraterrestrial rivers\\Mars"
-    fol_name = r"C:\Users\alvirownok\Downloads\Fracture Analysis Project Mariarca, Prof Max and Prof Longo\G_P\Brazil\Resized"
-    plot_fol_name = "plots/"
+def plot_correlation_gp_python(list1, name1, file_path="results.csv", river_names=None):
+    global python_GP_data  # Ensure this is defined globally or passed appropriately
+    if not python_GP_data:  # Check if the data needs to be read
+        read_from_file(file_path, python_GP_data)
 
-    if not os.path.exists(plot_fol_name):
-        os.makedirs(plot_fol_name)
+    if len(python_GP_data) != len(list1):
+        raise ValueError("The lists should be of equal length to compute correlation.")
 
-    runForEveryImageInFolder(fol_name, plot_fol_name)
-    
-    # Path to your data file
-    file_path = "C:\\Users\\alvirownok\\Downloads\\Fracture Analysis Project Mariarca, Prof Max and Prof Longo\\G_P\\results.csv"
+    # Convert lists to pandas Series for easier manipulation and analysis
+    y = pd.Series(list1)
+    x = pd.Series(python_GP_data)
 
-    read_from_file(file_path, python_GP_data)
+    # Calculate the Pearson correlation coefficient
+    try:
+        correlation = y.corr(x)
+        print(f"Correlation coefficient: {correlation:.2f}")
+    except Exception as e:
+        print("Error computing correlation:", str(e))
+        return
 
-    # Use the function to compute differences
-    compute_diff_between_methods(fractalyse_GP_data, python_GP_data, file_path)
+    # Plotting
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, label='Rivers')
 
-    # Now plot the correlation
-    plot_correlation_gp_python(fractalyse_GP_data, 'Fractalyse G-P', file_path)
+    if river_names:
+        # Annotate points with river names
+        for i, txt in enumerate(river_names):
+            ax.annotate(txt, (x[i], y[i]), fontsize=8)
 
-if __name__ == '__main__':
-    main()
+    # Fit a linear polynomial (line) to the data and plot
+    ax.plot(np.unique(x), np.poly1d(np.polyfit(x, y, 1))(np.unique(x)), color='red', label='Fit Line')
+
+    ax.set_xlabel("Python G-P")
+    ax.set_ylabel(name1)
+    ax.legend()
+    plt.show()
