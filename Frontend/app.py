@@ -20,9 +20,9 @@ st.title('Fractal Dimension Analysis')
 # Get the absolute path to the parent directory
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-# Paths to 'Test' and 'Output' directories
+# Paths to 'Test' and 'Outputs' directories
 test_dir = os.path.join(parent_dir, 'Test')
-output_dir = os.path.join(parent_dir, 'Output')
+outputs_dir = os.path.join(parent_dir, 'Outputs')  # Updated from 'Output' to 'Outputs'
 
 # Ensure the directories exist
 if not os.path.isdir(test_dir):
@@ -39,12 +39,12 @@ else:
         st.error(f"No subdirectories found in {test_dir}")
         image_folder = ''
 
-# For the plot folder, since Output has no subfolders
-if not os.path.isdir(output_dir):
-    st.error(f"The directory {output_dir} does not exist.")
+# For the plot folder, since Outputs has no subfolders
+if not os.path.isdir(outputs_dir):
+    st.error(f"The directory {outputs_dir} does not exist.")
 else:
-    st.info(f"Plots will be saved in the Output folder: {output_dir}")
-    plot_folder = output_dir  # Use the Output directory directly
+    st.info(f"Plots will be saved in the Outputs folder: {outputs_dir}")
+    plot_folder = outputs_dir  # Use the Outputs directory directly
 
 # Step 2: Select the fractalyse_GP_data.txt file from the Test directory
 txt_files = [f for f in os.listdir(test_dir) if f.endswith('.txt')]
@@ -55,13 +55,13 @@ else:
     st.error(f"No .txt files found in {test_dir}")
     fractalyse_file_path = ''
 
-# Step 3: Select the results.csv file from the Output directory
-csv_files = [f for f in os.listdir(output_dir) if f.endswith('.csv')]
+# Step 3: Select the results.csv file from the Outputs directory
+csv_files = [f for f in os.listdir(outputs_dir) if f.endswith('.csv')]
 if csv_files:
     results_file_name = st.selectbox('Select the results.csv file:', csv_files)
-    results_file_path = os.path.join(output_dir, results_file_name)
+    results_file_path = os.path.join(outputs_dir, results_file_name)
 else:
-    st.error(f"No .csv files found in {output_dir}")
+    st.error(f"No .csv files found in {outputs_dir}")
     results_file_path = ''
 
 # Initialize variables to store data
