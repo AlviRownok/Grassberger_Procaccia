@@ -5,6 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Now import the backend modules
+import streamlit as st
 from Backend.ImageFractalDimension_GP import runForEveryImageInFolder
 from Backend.Grassberger_Procaccia import plot_correlation_gp_python, compute_diff_between_methods
 from Backend.utils_gp import read_from_file
