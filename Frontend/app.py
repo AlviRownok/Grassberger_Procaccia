@@ -2,6 +2,9 @@
 import streamlit as st
 import sys
 import os
+import pandas as pd
+import zipfile
+import io
 
 # Add the parent directory to sys.path to access the Backend folder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -17,9 +20,9 @@ st.title('Fractal Dimension Analysis')
 # Get the absolute path to the parent directory
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-# Paths to 'Test' and 'Outputs' directories
+# Paths to 'Test' and 'Output' directories
 test_dir = os.path.join(parent_dir, 'Test')
-output_dir = os.path.join(parent_dir, 'Outputs')
+output_dir = os.path.join(parent_dir, 'Output')
 
 # Ensure the directories exist
 if not os.path.isdir(test_dir):
@@ -36,36 +39,50 @@ else:
         st.error(f"No subdirectories found in {test_dir}")
         image_folder = ''
 
-# For the plot folder, since Outputs has no subfolders
+# For the plot folder, since Output has no subfolders
 if not os.path.isdir(output_dir):
     st.error(f"The directory {output_dir} does not exist.")
 else:
-    st.info(f"Plots will be saved in the Outputs folder: {output_dir}")
-    plot_folder = output_dir  # Use the Outputs directory directly
+    st.info(f"Plots will be saved in the Output folder: {output_dir}")
+    plot_folder = output_dir  # Use the Output directory directly
 
-# Step 2: Upload the fractalyse_GP_data list as a text file
-fractalyse_file = st.file_uploader('Upload fractalyse_GP_data.txt file (RiverName;Value format)', type=['txt'])
+# Step 2: Select the fractalyse_GP_data.txt file from the Test directory
+txt_files = [f for f in os.listdir(test_dir) if f.endswith('.txt')]
+if txt_files:
+    fractalyse_file_name = st.selectbox('Select the fractalyse_GP_data.txt file:', txt_files)
+    fractalyse_file_path = os.path.join(test_dir, fractalyse_file_name)
+else:
+    st.error(f"No .txt files found in {test_dir}")
+    fractalyse_file_path = ''
 
-# Step 3: Upload the results CSV file for correlation
-results_file = st.file_uploader('Upload results.csv file', type=['csv'])
+# Step 3: Select the results.csv file from the Output directory
+csv_files = [f for f in os.listdir(output_dir) if f.endswith('.csv')]
+if csv_files:
+    results_file_name = st.selectbox('Select the results.csv file:', csv_files)
+    results_file_path = os.path.join(output_dir, results_file_name)
+else:
+    st.error(f"No .csv files found in {output_dir}")
+    results_file_path = ''
 
 # Initialize variables to store data
 fractalyse_GP_data = []
 river_names = []
 python_GP_data = []
 
-# Handle fractalyse file upload
-if fractalyse_file:
-    # Read and parse the fractalyse_GP_data file
-    content = fractalyse_file.read().decode('utf-8').splitlines()
-    for line in content:
-        if line.strip():  # Skip empty lines
-            parts = line.strip().split(';')
-            if len(parts) == 2:
-                river_names.append(parts[0])
-                fractalyse_GP_data.append(float(parts[1]))
-            else:
-                st.error(f"Invalid format in line: {line}")
+# Handle fractalyse file selection
+if fractalyse_file_path and os.path.exists(fractalyse_file_path):
+    with open(fractalyse_file_path, 'r') as file:
+        content = file.readlines()
+        for line in content:
+            if line.strip():  # Skip empty lines
+                parts = line.strip().split(';')
+                if len(parts) == 2:
+                    river_names.append(parts[0])
+                    fractalyse_GP_data.append(float(parts[1]))
+                else:
+                    st.error(f"Invalid format in line: {line}")
+else:
+    st.error('Please select a valid fractalyse_GP_data.txt file.')
 
 # Step 4: Button to run the calculations and plotting
 if st.button('Run Analysis'):
@@ -74,21 +91,45 @@ if st.button('Run Analysis'):
         runForEveryImageInFolder(image_folder, plot_folder)
 
         # Read the results file (python_GP_data) and compute differences
-        if results_file:
+        if results_file_path and os.path.exists(results_file_path):
             python_GP_data = []
-            # Save the uploaded results.csv file temporarily
-            with open('results.csv', 'wb') as f:
-                f.write(results_file.read())
-
-            read_from_file('results.csv', python_GP_data)
+            read_from_file(results_file_path, python_GP_data)
 
             if fractalyse_GP_data and python_GP_data:
-                compute_diff_between_methods(fractalyse_GP_data, python_GP_data, 'results.csv', river_names)
-                plot_correlation_gp_python(fractalyse_GP_data, 'Fractalyse G-P', 'results.csv', river_names)
+                compute_diff_between_methods(fractalyse_GP_data, python_GP_data, results_file_path, river_names)
+                plot_correlation_gp_python(fractalyse_GP_data, 'Fractalyse G-P', results_file_path, river_names)
                 st.success('Analysis completed and plots generated!')
+
+                # Provide download link for updated results.csv
+                updated_results_path = os.path.join(plot_folder, 'results.csv')
+                if os.path.exists(updated_results_path):
+                    with open(updated_results_path, 'rb') as f:
+                        st.download_button(
+                            label='Download Updated results.csv',
+                            data=f,
+                            file_name='results.csv',
+                            mime='text/csv'
+                        )
+
+                # Zip the plots and provide a download link
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+                    for root, dirs, files in os.walk(plot_folder):
+                        for file in files:
+                            if file.endswith('_plot.png'):
+                                file_path = os.path.join(root, file)
+                                zip_file.write(file_path, arcname=file)
+                zip_buffer.seek(0)
+                st.download_button(
+                    label='Download Plots as ZIP',
+                    data=zip_buffer,
+                    file_name='plots.zip',
+                    mime='application/zip'
+                )
+
             else:
                 st.error('Fractalyse data and Python G-P data are required for comparison.')
         else:
-            st.error('Please upload the results.csv file for correlation.')
+            st.error('Please select a valid results.csv file.')
     else:
         st.error('Please select a valid image folder.')
