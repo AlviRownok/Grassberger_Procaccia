@@ -17,9 +17,9 @@ st.title('Fractal Dimension Analysis')
 # Get the absolute path to the parent directory
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-# Paths to 'Test' and 'Output' directories
+# Paths to 'Test' and 'Outputs' directories
 test_dir = os.path.join(parent_dir, 'Test')
-output_dir = os.path.join(parent_dir, 'Output')
+output_dir = os.path.join(parent_dir, 'Outputs')
 
 # Ensure the directories exist
 if not os.path.isdir(test_dir):
@@ -36,12 +36,12 @@ else:
         st.error(f"No subdirectories found in {test_dir}")
         image_folder = ''
 
-# For the plot folder, since Output has no subfolders
+# For the plot folder, since Outputs has no subfolders
 if not os.path.isdir(output_dir):
     st.error(f"The directory {output_dir} does not exist.")
 else:
-    st.info(f"Plots will be saved in the Output folder: {output_dir}")
-    plot_folder = output_dir  # Use the Output directory directly
+    st.info(f"Plots will be saved in the Outputs folder: {output_dir}")
+    plot_folder = output_dir  # Use the Outputs directory directly
 
 # Step 2: Upload the fractalyse_GP_data list as a text file
 fractalyse_file = st.file_uploader('Upload fractalyse_GP_data.txt file (RiverName;Value format)', type=['txt'])
