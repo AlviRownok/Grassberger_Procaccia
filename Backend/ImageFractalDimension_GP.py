@@ -3,7 +3,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist, squareform
-from Grassberger_Procaccia.Backend.utils_gp import resizeAndPad
+from .utils_gp import resizeAndPad
+
 
 class ImageFractalDimension2:
     def __init__(self, image_name, SIZE):
