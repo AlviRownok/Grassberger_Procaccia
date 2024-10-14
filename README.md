@@ -1,5 +1,3 @@
----
-
 # **Fractal Dimension Analysis for River Networks**
 
 This project computes the fractal dimensions of river networks using the **Grassberger-Procaccia** algorithm. The application analyzes fractal structures from image files and compares the results of fractal dimensions calculated using two methods: a custom Python implementation and the Fractalyse tool.
