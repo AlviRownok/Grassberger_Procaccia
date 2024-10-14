@@ -1,7 +1,14 @@
-import streamlit as st
-from Grassberger_Procaccia.Backend.ImageFractalDimension_GP import runForEveryImageInFolder
-from Grassberger_Procaccia.Backend.Grassberger_Procaccia import plot_correlation_gp_python, compute_diff_between_methods
-from Grassberger_Procaccia.Backend.utils_gp import read_from_file
+import sys
+import os
+
+# Add the parent directory to sys.path to access the Backend folder
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Now import the backend modules
+from Backend.ImageFractalDimension_GP import runForEveryImageInFolder
+from Backend.Grassberger_Procaccia import plot_correlation_gp_python, compute_diff_between_methods
+from Backend.utils_gp import read_from_file
+
 
 # Function to parse the txt file with river names and fractal dimensions
 def parse_fractalyse_file(file):
