@@ -3,7 +3,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from Grassberger_Procaccia.Backend.utils_gp import read_from_file
+from .utils_gp import read_from_file
+
 
 python_GP_data = []  # Empty list that will be filled with fractal dimensions calculated by the Python method
 
