@@ -16,11 +16,11 @@ $$
 
 Where:
 - $N$ is the number of points.
-- $$ X_i $$ and $$ X_j $$ are two points in the dataset.
-- $$ ||X_i - X_j|| $$ is the Euclidean distance between two points.
-- $$ \Theta $$ is the Heaviside step function, which counts the number of pairs of points that are closer than $$ \epsilon $$.
+- $X_i$ and $X_j$ are two points in the dataset.
+- $||X_i - X_j||$ is the Euclidean distance between two points.
+- $\Theta$ is the Heaviside step function, which counts the number of pairs of points that are closer than $\epsilon$.
 
-The function $$ C(\epsilon) $$ represents the **correlation sum**, which counts how many pairs of points have a distance smaller than $$ \epsilon $$. The correlation dimension $$ D_2 $$ can be estimated by analyzing the slope of the log-log plot of $$ C(\epsilon) $$ versus $$ \epsilon $$:
+The function $C(\epsilon)$ represents the **correlation sum**, which counts how many pairs of points have a distance smaller than $\epsilon$. The correlation dimension $D_2$ can be estimated by analyzing the slope of the log-log plot of $C(\epsilon)$ versus $\epsilon$:
 
 $$
 D_2 = \lim_{\epsilon \to 0} \frac{d \log C(\epsilon)}{d \log \epsilon}
