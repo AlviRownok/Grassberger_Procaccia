@@ -47,7 +47,7 @@ This application implements the Grassberger-Procaccia algorithm to perform fract
 
 ### GUI Preview
 
-[![See Preview](https://github.com/AlviRownok/Grassberger_Procaccia/blob/main/GP_GUI.png)]
+![See Preview](https://github.com/AlviRownok/Grassberger_Procaccia/blob/main/GP_GUI.png)
 
 ### **Key Features**
 
