@@ -184,10 +184,6 @@ This project is licensed under the MIT License. For details, refer to the [LICEN
 
 ---
 
-Certainly! Here’s the updated citation part for your README in **APA format**:
-
----
-
 ## **Citations**
 
 This application and its methodology are cited in:
