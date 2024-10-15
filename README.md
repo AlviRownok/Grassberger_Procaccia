@@ -45,9 +45,9 @@ For further theoretical details, refer to the original paper by Grassberger and 
 
 This application implements the Grassberger-Procaccia algorithm to perform fractal analysis on river network images, making it a powerful tool for geographic research. It processes multiple images from a directory, calculating the fractal dimension of each and comparing the results with those from the **Fractalyse** tool.
 
-### GUI Demo Video
+### GUI Preview
 
-[![Watch the demo video](https://github.com/AlviRownok/Grassberger_Procaccia/blob/main/GP_GUI.png)](https://github.com/AlviRownok/Grassberger_Procaccia/blob/main/GP_GUI.mp4)
+[![See Preview](https://github.com/AlviRownok/Grassberger_Procaccia/blob/main/GP_GUI.png)]
 
 ### **Key Features**
 
