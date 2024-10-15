@@ -1,52 +1,85 @@
-# **Fractal Dimension Analysis for River Networks**
+# **Grassberger-Procaccia Algorithm for Fractal Analysis in Geographic River Networks**
 
-This project computes the fractal dimensions of river networks using the **Grassberger-Procaccia** algorithm. The application analyzes fractal structures from image files and compares the results of fractal dimensions calculated using two methods: a custom Python implementation and the Fractalyse tool.
+This dedicated application is built for researchers in the field of geographic analysis, focusing on the classification and fractal analysis of river networks. The application employs the **Grassberger-Procaccia (G-P) Algorithm**, a well-known method for determining the fractal dimension of a set of points, which is particularly useful in analyzing complex, non-linear systems such as river networks. This tool allows users to compute the fractal dimensions of river images, facilitating the comparison between Python-based results and those from the **Fractalyse** tool.
 
-## **Project Overview**
+## **Theoretical Overview: Grassberger-Procaccia Algorithm**
 
-This project performs fractal analysis on river images and computes their fractal dimensions using a modified Grassberger-Procaccia (G-P) method. The application compares fractal dimensions computed by **Fractalyse** and Python-based methods, providing a visual and statistical correlation between them.
+The Grassberger-Procaccia algorithm (G-P) was first introduced in 1983 by Peter Grassberger and Itamar Procaccia to compute the fractal dimension of strange attractors in chaotic systems. The algorithm is widely used to calculate the **correlation dimension**, a specific type of fractal dimension that quantifies how the number of pairs of points within a given distance scales as the distance itself varies.
 
-Additionally, it processes multiple images from a directory, generating fractal dimension plots and saving them, along with a CSV file containing the computed results for further analysis.
+### **Mathematical Foundations**
+
+The G-P algorithm is based on the idea that, for a fractal object, the number of pairs of points separated by a distance less than or equal to `ε` (epsilon) scales as a power law with respect to `ε`. More formally:
+
+\[
+C(\epsilon) = \frac{2}{N(N-1)} \sum_{i=1}^{N} \sum_{j=i+1}^{N} \Theta(\epsilon - ||X_i - X_j||)
+\]
+
+Where:
+- \( N \) is the number of points.
+- \( X_i \) and \( X_j \) are two points in the dataset.
+- \( ||X_i - X_j|| \) is the Euclidean distance between two points.
+- \( \Theta \) is the Heaviside step function, which counts the number of pairs of points that are closer than \( \epsilon \).
+
+The function \( C(\epsilon) \) represents the **correlation sum**, which counts how many pairs of points have a distance smaller than \( \epsilon \). The correlation dimension \( D_2 \) can be estimated by analyzing the slope of the log-log plot of \( C(\epsilon) \) versus \( \epsilon \):
+
+\[
+D_2 = \lim_{\epsilon \to 0} \frac{d \log C(\epsilon)}{d \log \epsilon}
+\]
+
+This slope is the fractal dimension of the system, and it reveals the self-similarity of the system at different scales.
+
+### **Fractal Dimension in Geographic River Systems**
+
+In geographic analysis, river networks can be considered as fractal structures due to their self-similarity across different scales. The fractal dimension provides insight into the complexity and distribution of river channels. By applying the Grassberger-Procaccia algorithm, this tool calculates the fractal dimensions of various river networks, aiding in the classification and analysis of river patterns.
+
+### **Key Features of the Grassberger-Procaccia Algorithm:**
+1. **Correlation Dimension**: The core output of the algorithm, measuring the fractal complexity.
+2. **Log-Log Plot**: A visualization that helps identify the linear region from which the correlation dimension is extracted.
+3. **Multiscale Analysis**: The G-P algorithm is ideal for studying natural systems that exhibit self-similar patterns, such as river networks.
+
+For further theoretical details, refer to the original paper by Grassberger and Procaccia or this comprehensive [scholarpedia article](http://www.scholarpedia.org/article/Grassberger-Procaccia_algorithm).
+
+---
+
+## **Application Overview**
+
+This application implements the Grassberger-Procaccia algorithm to perform fractal analysis on river network images, making it a powerful tool for geographic research. It processes multiple images from a directory, calculating the fractal dimension of each and comparing the results with those from the **Fractalyse** tool. 
 
 ### **Key Features**
 
-- Compute fractal dimensions from river network images using the G-P method.
-- Visualize correlation between fractal dimensions calculated using Python and Fractalyse.
-- Tkinter-based GUI for user-friendly folder and file selection.
-- Automated processing of multiple images.
-- Generate visual plots of fractal dimension analysis.
+- **Fractal Dimension Calculation**: Computes the correlation dimension using the Grassberger-Procaccia algorithm from river network images.
+- **Correlation with Fractalyse**: Compares results from Python-based calculations with pre-calculated fractal dimensions obtained via the Fractalyse tool.
+- **Tkinter GUI**: A user-friendly graphical interface that allows researchers to easily select directories and files for processing.
+- **Batch Processing**: Automates the analysis of multiple images, generating visual plots and saving them to a designated output folder.
 
 ---
 
 ## **Prerequisites**
 
-Before you can run the project, ensure you have the following software installed on your system:
+Before you can run the application, ensure you have the following installed:
 
 1. **Python** (recommended version: Python 3.11 or later)
-2. **Virtual Environment** (optional but recommended)
+2. **Tkinter** (for the GUI, may require separate installation on some systems)
+3. **Virtual Environment** (optional but recommended)
 
 ### **Python Packages**
 
-The project depends on several Python packages, which can be installed via `pip` using a `requirements.txt` file (included in the project). Additionally, `Tkinter` is required for the GUI, which might need to be installed separately in some environments.
+The necessary Python packages can be installed using `pip` and the provided `requirements.txt` file. These packages include `numpy`, `scipy`, `matplotlib`, `pandas`, and `opencv-python`.
 
 ---
 
 ## **Installation Instructions**
 
-Follow these steps to set up the project on your local machine:
+Follow these steps to set up the application:
 
-### **Step 1: Clone the Project Repository**
-
-Clone the repository or download the project files to your local machine.
+### **Step 1: Clone the Repository**
 
 ```bash
 git clone https://github.com/AlviRownok/Grassberger_Procaccia.git
 cd Grassberger_Procaccia
 ```
 
-### **Step 2: Create a Virtual Environment**
-
-Creating a virtual environment is recommended to avoid conflicts with other Python projects.
+### **Step 2: Set Up a Virtual Environment**
 
 ```bash
 python -m venv venv
@@ -54,21 +87,19 @@ python -m venv venv
 
 ### **Step 3: Activate the Virtual Environment**
 
-- On **Windows**:
+- **Windows**:
 
   ```bash
   venv\Scripts\activate
   ```
 
-- On **macOS/Linux**:
+- **macOS/Linux**:
 
   ```bash
   source venv/bin/activate
   ```
 
-### **Step 4: Install Dependencies**
-
-With the virtual environment activated, install the required dependencies from the `requirements.txt` file:
+### **Step 4: Install Required Libraries**
 
 ```bash
 pip install -r requirements.txt
@@ -76,37 +107,17 @@ pip install -r requirements.txt
 
 ### **Step 5: Install Tkinter (if necessary)**
 
-On some systems, especially if you're working in a minimal Python installation, `Tkinter` might not be included by default. To install `Tkinter`, you can use:
-
-- On **Windows** and **macOS**, Tkinter is usually bundled with Python. You can check if Tkinter is available by running:
-
-  ```bash
-  python -m tkinter
-  ```
-
-  If the Tkinter window opens, you're good to go.
-
-- On **Linux**, you may need to install `Tkinter` separately. For Debian-based systems (like Ubuntu), run:
-
-  ```bash
-  sudo apt-get install python3-tk
-  ```
-
-If you're using a Python distribution without `Tkinter` (rare but possible), you can install it via `pip`:
+Tkinter is usually bundled with Python on **Windows** and **macOS**. If you're on **Linux**, or if Tkinter is not available, install it with:
 
 ```bash
-pip install tk
+sudo apt-get install python3-tk  # For Debian-based Linux systems
 ```
 
 ---
 
 ## **Running the Application**
 
-Once you have installed the prerequisites and activated the virtual environment, follow these steps to run the application:
-
 ### **Step 1: Activate Virtual Environment**
-
-Activate your virtual environment (if not already active):
 
 ```bash
 venv\Scripts\activate  # On Windows
@@ -115,34 +126,27 @@ source venv/bin/activate  # On macOS/Linux
 
 ### **Step 2: Run the Application**
 
-Run the main application script `Grassberger_Procaccia.py`:
-
 ```bash
 python Grassberger_Procaccia.py
 ```
 
 ### **Step 3: Select Required Files**
 
-The application will open a Tkinter-based file selection dialog for you to choose:
-
-1. The folder containing river network images.
-2. The folder where plots should be saved (default is `Outputs` folder if nothing is selected).
-3. The text file containing `fractalyse_GP_data`, which contains pre-computed fractal dimensions for comparison (in the format: `river_name;fractal_value`).
-
-After selecting these files, the application will perform fractal analysis and generate the outputs.
+The application will prompt you to select:
+1. A folder containing river network images.
+2. A folder to save the output plots.
+3. A text file containing `fractalyse_GP_data`, structured as `river_name;fractal_value`.
 
 ---
 
 ## **Folder Structure**
-
-Here is the folder structure based on your project:
 
 ```
 GP/
 │
 ├── Grassberger_Procaccia/
 │   ├── __pycache__/              # Python cache folder (auto-generated)
-│   ├── Outputs/                  # Folder where the output plots will be saved
+│   ├── Outputs/                  # Folder where output plots will be saved
 │   ├── Test/                     # (Optional) Test files folder
 │   ├── venv/                     # Virtual environment folder
 │   ├── Grassberger_Procaccia.py   # Main script to run the project
@@ -159,64 +163,39 @@ GP/
 ### **Input Example**
 
 - **Input Folder**: A directory containing `.png` images of river networks.
-- **Fractalyse Data File**: A text file structured as follows:
+- **Fractalyse Data File**: A text file structured as:
 
   ```
   Achankovil;0.99
   Aconcagua;1.57
   Adda;1.51
-  Adige;1.27
-  Aeolis Planum;1.53
   ```
 
 ### **Output**
 
-- **Fractal Dimension CSV**: `results.csv` containing the computed fractal dimensions.
-- **Plots**: Correlation plots between fractal dimensions computed by Fractalyse and Python methods, saved in the `Outputs/` folder (or the folder you specified).
-
-Example structure of `results.csv`:
-
-```
-Filename;Fractal Dimension
-river1.png;1.53
-river2.png;1.27
-...
-```
-
----
-
-## **Explanation of Key Features**
-
-1. **Fractal Dimension Calculation**:
-   - The `ImageFractalDimension_GP.py` script performs fractal dimension calculations using a modified Grassberger Procaccia method.
-   - It processes each image, binarizes it, extracts points, and computes the fractal dimension.
-
-2. **Correlation Analysis**:
-   - `utils_gp.py` handles correlation analysis between Fractalyse and Python results.
-   - The script compares the fractal dimensions and plots the results, showing correlations and differences.
-
-3. **Tkinter GUI**:
-   - The GUI prompts users to select directories and files, making the process user-friendly.
-   - It eliminates the need for hardcoded paths, allowing dynamic selection of input data.
+- **Fractal Dimension CSV**: `results.csv` containing computed fractal dimensions.
+- **Correlation Plots**: Saved in the `Outputs/` folder, showing correlations between Python and Fractalyse results.
 
 ---
 
 ## **License**
 
-This project is released under the MIT License. You are free to use, modify, and distribute the code as long as proper attribution is given.
+This project is licensed under the MIT License. For details, refer to the [LICENSE.md](./LICENSE.md) file.
 
 ---
 
-## **Conclusion**
-
-This project provides a complete tool for performing fractal analysis on river network images using python and Grassberger Procaccia Algorithm and comparing the results with Fractalyse-calculated dimensions. The tool is flexible, allowing users to input their data through a GUI and generate meaningful outputs like CSV files and correlation plots.
-
-If you encounter any issues or need further assistance, feel free to open an issue or contact us.
+Certainly! Here’s the updated citation part for your README in **APA format**:
 
 ---
 
-### **Contributors**
+## **Citations**
 
-- [Alvi Rownok] - Masters in Data Science, Department of Physics, University of Naples Federico II.
+This application and its methodology are cited in:
+
+> Grassberger, P., & Procaccia, I. (1983). "Characterization of strange attractors." *Physical Review Letters, 50(5)*, 346–349.
+
+The work presented at the European Planetary Science Congress (EPSC2024) is cited as:
+
+> D'Aniello, M., Zampella, M. R., Dosi, A., Rownok, A., Delli Veneri, M., Ettari, A., Cavuoti, S., Sannino, L., Brescia, M., Donadio, C., & Longo, G. (2024). Rivers' classification: Integrating deep learning and statistical techniques for terrestrial and extraterrestrial drainage networks analysis. *European Planetary Science Congress 2024*.
 
 ---
