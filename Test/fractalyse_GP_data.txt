@@ -1,19 +1,19 @@
-Achankovil;0.99  
+Achavokil;0.99  
 Aconcagua;1.57  
 Adda;1.51  
 Adige;1.27  
-Aeolis Planum;1.53  
-Al- Abiadh;1.95  
+AeolisPlanum1;1.53  
+AlAbiadh;1.95  
 Amazon;1.64  
 Amur;1.37  
 AnjaniandJhiri;1.95  
-Arabia Quadrangle;1.52  
+ArabiaValley2;1.52  
 Arno;1.35  
-Baholomeo;1.36  
+Bahomoleo;1.36  
 Bangga;1.50  
 Basento;1.32  
 Bharathappuzha;1.43  
-BioBio;1.05  
+Biobio;1.05  
 Blanchard;1.59  
 Boquet;1.34  
 Bradano;1.42  
@@ -23,28 +23,28 @@ Captina;1.45
 Chalakudy;1.28  
 Chaliyar;1.37  
 Chari;1.43  
-Chryse Planitia;1.19  
+ChrysePlanitia3;1.19  
 Congo;1.63  
-Cusus Valles;1.42  
+CususValles4;1.42  
 Danube;1.58  
 Devoll;1.49  
 Dniester;1.49  
 Don;1.62  
 Drin;1.33  
-Eberswalde Delta;1.52  
-Eberswalde Delta2;1.51  
+Eberswalde Delta-11;1.52  
+Eberswaldedelta5;1.51  
 Ebro;1.54  
-Efesto Fossae;1.48  
+EfestoFossae-17;1.48  
 Elqui;0.56  
 Eufrate;1.22  
 Gale;1.38  
 Ganges;1.41  
-Huang He;1.32  
+HuangHe;1.32  
 Huasco;1.25  
-Huygens_Hellas_craters;1.37  
+Huygens_crater_Hellas_crater-15;1.37  
 Idice;1.32  
 Indus;1.42  
-Indus Valley;1.57  
+Indusvallei-7;1.57  
 Isonzo;1.29  
 Itata;1.49  
 Jharkhand;1.62  
@@ -61,11 +61,11 @@ Krishna;1.32
 Kuttiyadi;1.62  
 Lena;1.38  
 Liri;1.38  
-Lockras Valley;1.43  
+Lockrasvallei-8;1.43  
 Loire;1.47  
 Luni;1.31  
-Ma_adim Vallis 1;1.39  
-Ma_adim Vallis 2;1.08  
+MaadimVallis-9;1.39  
+MaadimVallis2-10;1.08  
 Mackenze;1.50  
 Mahe;1.56  
 Maipo;1.34  
@@ -75,27 +75,27 @@ Maule;1.60
 Meenachil;1.48  
 Mekong;1.29  
 Meuse;1.39  
-Mississipi;1.56  
+Mississippi;1.56  
 Missouri;1.30  
 Moreau;1.31  
-Muvattupuhza;1.23  
-Nagkton Vallei;1.30  
+Muvattupuzha;1.23  
+Nakgtonvallei-12;1.30  
 Neyyar;1.39  
 Niger;1.56  
 Nile;1.44  
-Nirgal Vallei;1.21  
+NirgalVallis-13;1.21  
 Ob;1.27  
 Oder;1.20  
 Ohio;1.40  
 Olenek;1.30  
 Ombrone;1.36  
 Orr;1.66  
-Osuga Vallei;1.38  
+OsugaValley-14;1.38  
 Ottawa;1.69  
 Pamba;1.10  
 Paraguay;1.50  
 Parana;1.41  
-Parana Vallei;1.41  
+ParanaValley-16;1.41  
 Periyar;1.44  
 Petrace;1.54  
 Piave;1.41  
@@ -112,7 +112,7 @@ Saitama;1.57
 SaludaReedy;1.64  
 SanJoaquin;1.49  
 Sava;1.28  
-Schiapparelli crater;1.34  
+Schiapparellicrater-18;1.34  
 Seine;1.48  
 Simeto;1.44  
 Singkoyo;1.50  
@@ -122,18 +122,18 @@ Susquehanna;1.66
 Tambun;1.48  
 Tanaro;1.41  
 Tarali;1.70  
-Terra Cimeria 1;1.40  
-Terra Cimeria 2;1.42  
+TerraCimmeria-19;1.40  
+TerraCimmeria-20;1.42  
 Tevere;1.56  
 Thames;1.46  
 Ticino;1.24  
 Tigri;1.18  
-Titan 1 (Titan2);1.36  
-Titan 2 (Titanoriver);1.50  
+Titan2-25;1.36  
+Titanoriver-24;1.50  
 Toaya;1.42  
 Tobol;1.37  
 Turkey;1.56  
-Tyras Vallei;1.38  
+TyrasValley-21;1.38  
 Umbro;1.63  
 Uruguay;1.21  
 Vamanapuram;1.50  
@@ -141,42 +141,16 @@ Varuna;1.53
 Vergas;1.37  
 Vishwamitri;1.53  
 Vistula;1.33  
-Vjosa;1.19  
-Volfe-Bell Canyon;1.01  
+Vjosa;1.19 
 Volga;1.34  
 Volturno;1.54  
 Wabash;1.65  
 WadiQuena;1.27  
-Warrego Valles 1;1.54  
-Warrego Valles 2;1.43  
+WarregoValles-22;1.54  
+WarregoValles2-23;1.43  
 Wheeling;1.58  
 Wyoming;1.68  
 Yangtze;1.43  
 Yellowstone;1.36  
 Yenisey;1.33  
-Zambezi;1.41  
-Aeolis Planum;1.53  
-Arabia Quadrangle;1.52  
-Chryse Planitia;1.19  
-Cusus Valles;1.42  
-Eberswalde Delta;1.52  
-Eberswalde Delta2;1.51  
-Efesto Fossae;1.48  
-Gale;1.38  
-Huygens_Hellas_craters;1.37  
-Indus Valley;1.57  
-Lockras Valley;1.43  
-Ma_adim Vallis 1;1.39  
-Ma_adim Vallis 2;1.08  
-Nagkton Vallei;1.30  
-Nirgal Vallei;1.21  
-Osuga Vallei;1.38  
-Parana Vallei;1.41  
-Schiapparelli crater;1.34  
-Terra Cimeria 1;1.40  
-Terra Cimeria 2;1.42  
-Titan 1 (Titan2);1.36  
-Titan 2 (Titanoriver);1.50  
-Tyras Vallei;1.38  
-Warrego Valles 1;1.54  
-Warrego Valles 2;1.43
+Zambezi;1.41
