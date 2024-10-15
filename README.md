@@ -15,7 +15,7 @@ C(\epsilon) = \frac{2}{N(N-1)} \sum_{i=1}^{N} \sum_{j=i+1}^{N} \Theta(\epsilon -
 $$
 
 Where:
-- $$ N $$ is the number of points.
+- $N$ is the number of points.
 - $$ X_i $$ and $$ X_j $$ are two points in the dataset.
 - $$ ||X_i - X_j|| $$ is the Euclidean distance between two points.
 - $$ \Theta $$ is the Heaviside step function, which counts the number of pairs of points that are closer than $$ \epsilon $$.
