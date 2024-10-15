@@ -1,0 +1,3 @@
+Jequitinhonha;1.61  
+Paraiba_do_Sul;1.53  
+Sao_Francisco;1.45

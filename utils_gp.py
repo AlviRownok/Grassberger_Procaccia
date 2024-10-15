@@ -51,8 +51,7 @@ def compute_diff_between_methods(fractalyse_GP_data, python_GP_data, file_path=N
     print("Differences between Fractalyse and Python G-P methods:")
     print(diff)
 
-def plot_correlation_gp_python(list1, name1, file_path="results.csv"):
-    global python_GP_data  # Ensure this is defined globally or passed appropriately
+def plot_correlation_gp_python(list1, name1, python_GP_data, file_path="results.csv"):
     if not python_GP_data:  # Check if the data needs to be read
         read_from_file(file_path, python_GP_data)
 
